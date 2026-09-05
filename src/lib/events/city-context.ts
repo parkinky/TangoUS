@@ -34,6 +34,8 @@ export async function resolveCityContext(): Promise<CityContext> {
   const cookieStore = await cookies();
   const cookieValue = cookieStore.get(CITY_COOKIE)?.value;
 
+  const allCities = await getDistinctCities();
+
   if (user) {
     const { data: profile } = await supabase
       .from("profiles")
@@ -48,6 +50,11 @@ export async function resolveCityContext(): Promise<CityContext> {
       .gte("end_date", todayISODate())
       .order("start_date", { ascending: true });
 
+    // Home city and upcoming trips are surfaced first (with a distinct
+    // label) since they're the most relevant picks for this user, but every
+    // city that actually has events should still be reachable below them —
+    // otherwise a user with no home_city/trip_cities set sees an empty
+    // dropdown.
     const options: CityOption[] = [];
     if (profile?.home_city) {
       options.push({
@@ -66,6 +73,15 @@ export async function resolveCityContext(): Promise<CityContext> {
         label: `${trip.city}${trip.state ? ", " + trip.state : ""} (여행 예정)`,
       });
     }
+    for (const city of allCities) {
+      const key = cityKey(city.city, city.state);
+      if (options.some((o) => cityKey(o.city, o.state) === key)) continue;
+      options.push({
+        city: city.city,
+        state: city.state,
+        label: `${city.city}${city.state ? ", " + city.state : ""}`,
+      });
+    }
 
     let selected = options[0] ?? null;
     if (cookieValue) {
@@ -79,7 +95,6 @@ export async function resolveCityContext(): Promise<CityContext> {
     return { loggedIn: true, options, selected };
   }
 
-  const allCities = await getDistinctCities();
   const options: CityOption[] = allCities.map((c) => ({
     city: c.city,
     state: c.state,
