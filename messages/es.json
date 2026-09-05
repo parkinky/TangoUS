@@ -50,8 +50,23 @@
       "password": "Contraseña",
       "submit": "Iniciar Sesión",
       "submitting": "Iniciando sesión...",
+      "findAccountLink": "¿Olvidaste tu usuario o contraseña?",
       "noAccount": "¿No tienes una cuenta?",
       "signupLink": "Regístrate"
+    },
+    "findAccount": {
+      "title": "Recuperar Usuario / Restablecer Contraseña",
+      "identifier": "Usuario o correo electrónico",
+      "next": "Siguiente",
+      "submitting": "Procesando...",
+      "answerIntro": "Responde las preguntas de seguridad que configuraste al registrarte.",
+      "verify": "Verificar",
+      "startOver": "Empezar de nuevo",
+      "usernameLabel": "Usuario",
+      "newPassword": "Nueva contraseña",
+      "resetPassword": "Cambiar contraseña",
+      "resetSuccess": "Tu contraseña ha sido cambiada. Inicia sesión con tu nueva contraseña.",
+      "backToLogin": "Volver a Iniciar Sesión"
     }
   }
 }

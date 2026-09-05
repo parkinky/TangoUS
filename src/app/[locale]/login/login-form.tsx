@@ -59,6 +59,12 @@ export default function LoginForm() {
       </button>
 
       <p className="text-center text-sm text-zinc-600 dark:text-zinc-400">
+        <Link href="/find-account" className="font-medium underline">
+          {t("findAccountLink")}
+        </Link>
+      </p>
+
+      <p className="text-center text-sm text-zinc-600 dark:text-zinc-400">
         {t("noAccount")}{" "}
         <Link href="/signup" className="font-medium underline">
           {t("signupLink")}

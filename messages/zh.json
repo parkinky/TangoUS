@@ -50,8 +50,23 @@
       "password": "密码",
       "submit": "登录",
       "submitting": "正在登录...",
+      "findAccountLink": "忘记用户名或密码?",
       "noAccount": "还没有账户?",
       "signupLink": "注册"
+    },
+    "findAccount": {
+      "title": "找回用户名/重置密码",
+      "identifier": "用户名或邮箱",
+      "next": "下一步",
+      "submitting": "处理中...",
+      "answerIntro": "请回答您注册时设置的安全问题。",
+      "verify": "验证",
+      "startOver": "重新开始",
+      "usernameLabel": "用户名",
+      "newPassword": "新密码",
+      "resetPassword": "修改密码",
+      "resetSuccess": "密码已修改，请使用新密码登录。",
+      "backToLogin": "返回登录"
     }
   }
 }

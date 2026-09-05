@@ -50,8 +50,23 @@
       "password": "Password",
       "submit": "Log In",
       "submitting": "Logging in...",
+      "findAccountLink": "Forgot username or password?",
       "noAccount": "Don't have an account?",
       "signupLink": "Sign up"
+    },
+    "findAccount": {
+      "title": "Find Username / Reset Password",
+      "identifier": "Username or Email",
+      "next": "Next",
+      "submitting": "Processing...",
+      "answerIntro": "Answer the security questions you set up when you signed up.",
+      "verify": "Verify",
+      "startOver": "Start over",
+      "usernameLabel": "Username",
+      "newPassword": "New Password",
+      "resetPassword": "Change Password",
+      "resetSuccess": "Your password has been changed. Please log in with your new password.",
+      "backToLogin": "Back to Log In"
     }
   }
 }
