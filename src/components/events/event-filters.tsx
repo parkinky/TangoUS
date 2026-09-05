@@ -7,7 +7,7 @@ import type { EventType } from "@/lib/events/queries";
 
 const TYPE_OPTIONS: { value: EventType | undefined; label: string }[] = [
   { value: undefined, label: "전체" },
-  { value: "event", label: "이벤트" },
+  { value: "event", label: "엔쿠엔트로" },
   { value: "festival", label: "페스티벌" },
   { value: "marathon", label: "마라톤" },
   { value: "milonga", label: "밀롱가" },

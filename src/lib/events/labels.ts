@@ -1,7 +1,7 @@
 import type { EventType } from "./queries";
 
 export const EVENT_TYPE_LABELS: Record<EventType, string> = {
-  event: "이벤트",
+  event: "엔쿠엔트로",
   festival: "페스티벌",
   marathon: "마라톤",
   milonga: "밀롱가",

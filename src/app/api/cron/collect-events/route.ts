@@ -76,7 +76,7 @@ function isAuthorized(request: NextRequest): boolean {
 async function searchForEvents(today: string): Promise<ParsedSearchResult> {
   const client = new Anthropic();
 
-  const prompt = `오늘은 ${today}입니다. 웹 검색 도구를 사용해서 오늘 이후로 미국에서 열리는 아르헨티나 탱고 이벤트, 밀롱가, 마라톤, 페스티벌 정보를 최대한 찾아주세요.
+  const prompt = `오늘은 ${today}입니다. 웹 검색 도구를 사용해서 오늘 이후로 미국에서 열리는 아르헨티나 탱고 엔쿠엔트로, 밀롱가, 마라톤, 페스티벌 정보를 최대한 찾아주세요.
 
 - 이미 지난 행사는 제외하고, 오늘부터 앞으로 몇 달 내에 열리는 행사만 포함하세요.
 - 각 항목의 제목과 설명은 원문(영어)과 한국어 번역을 함께 제공하세요.
