@@ -10,11 +10,34 @@ import { titlesLikelyMatch } from "@/lib/events/title-similarity";
 export const maxDuration = 300;
 
 const EVENT_TYPES = ["event", "festival", "marathon", "milonga"] as const;
+type EventType = (typeof EVENT_TYPES)[number];
+
+// The model occasionally returns a type outside our 4 categories — an
+// English label ("Encuentro"), or a related-but-distinct concept
+// ("Practica"). A strict z.enum() fails structured-output parsing for the
+// WHOLE batch over one bad label, discarding every other event found in
+// the same run. Every auto-scraped event still goes through admin
+// approval before it's public, so normalizing a mislabel is far cheaper
+// than losing the run — hence a tolerant string + transform instead.
+function normalizeEventType(raw: string): EventType {
+  const key = raw.trim().toLowerCase();
+  if ((EVENT_TYPES as readonly string[]).includes(key)) return key as EventType;
+  if (key.includes("encuentro")) return "event";
+  if (key.includes("festival")) return "festival";
+  if (key.includes("marathon")) return "marathon";
+  if (key.includes("milonga") || key.includes("practica")) return "milonga";
+  return "event";
+}
 
 const ScrapedEventSchema = z.object({
   title_en: z.string().describe("Event title in its original (English) source language"),
   title_ko: z.string().describe("Korean translation of the title"),
-  type: z.enum(EVENT_TYPES),
+  type: z
+    .string()
+    .describe(
+      'One of: "event" (엔쿠엔트로/Encuentro), "festival", "marathon", "milonga"'
+    )
+    .transform(normalizeEventType),
   city: z.string(),
   state: z.string().describe(
     "US state or Canadian province, as a 2-letter abbreviation, e.g. TX, BC, ON, QC"
