@@ -3,7 +3,8 @@
 // and a year).
 const STOPWORDS = new Set([
   "tango", "the", "a", "an", "at", "in", "on", "of", "for", "&", "and",
-  "festival", "milonga", "marathon", "encuentro", "presents", "de", "la", "el",
+  "festival", "festivals", "milonga", "milongas", "marathon", "marathons",
+  "encuentro", "encuentros", "presents", "de", "la", "el",
 ]);
 
 function significantWords(title: string | null): Set<string> {

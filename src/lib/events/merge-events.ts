@@ -7,27 +7,58 @@ function sameCity(a: EventRow, b: EventRow): boolean {
   if (!a.city || !b.city) return false;
   return (
     a.city.trim().toLowerCase() === b.city.trim().toLowerCase() &&
-    (a.state ?? "").trim().toLowerCase() === (b.state ?? "").trim().toLowerCase()
+    (a.state ?? "").trim().toLowerCase() === (b.state ?? "").trim().toLowerCase() &&
+    (a.nat ?? "").trim().toLowerCase() === (b.nat ?? "").trim().toLowerCase()
   );
 }
 
+// True when the two rows' date ranges overlap, or come within `bufferDays`
+// of each other (a festival's pre-party milonga the day before, say).
+// Without this, two totally unrelated events that merely share a city would
+// be treated as the same happening no matter how far apart in time they run.
+function datesNearOrOverlap(a: EventRow, b: EventRow, bufferDays = 3): boolean {
+  const aStart = a.start_date;
+  const bStart = b.start_date;
+  if (!aStart || !bStart) return false;
+  const aEnd = a.end_date ?? aStart;
+  const bEnd = b.end_date ?? bStart;
+
+  const bufferMs = bufferDays * 24 * 60 * 60 * 1000;
+  const aStartMs = new Date(aStart).getTime() - bufferMs;
+  const aEndMs = new Date(aEnd).getTime() + bufferMs;
+  const bStartMs = new Date(bStart).getTime();
+  const bEndMs = new Date(bEnd).getTime();
+
+  if (Number.isNaN(aStartMs) || Number.isNaN(bStartMs)) return false;
+
+  return aStartMs <= bEndMs && bStartMs <= aEndMs;
+}
+
 // Two rows are treated as the same real-world happening when either:
-// - one is a festival and the other a milonga in the same city — a festival
-//   always runs alongside milongas (pre/after-parties etc.), even when the
-//   milonga's own dates fall outside the festival's main dates, or
-// - they run over the exact same dates and their titles share at least 3
-//   distinct words (or match exactly) once generic tango/year words are
-//   ignored — this catches plain duplicate scrapes.
+// - one is a festival and the other a milonga in the same city AND their
+//   dates overlap (or sit within a few days of each other) — a festival
+//   always runs alongside milongas (pre/after-parties etc.), but a milonga
+//   that merely happens to recur in the same city months apart is not part
+//   of that festival, or
+// - they run over the exact same dates, in the same city, and their titles
+//   share at least 3 distinct words (or match exactly) once generic
+//   tango/year words are ignored — this catches plain duplicate scrapes of
+//   the same event. The same-city check keeps unrelated events in different
+//   cities (or countries) that happen to share a generic name pattern and
+//   date range — e.g. two different "Year-End Milonga Week" specials in two
+//   different countries — from being folded together.
 function isSameEvent(a: EventRow, b: EventRow): boolean {
   if (
     ((a.type === "festival" && b.type === "milonga") ||
       (a.type === "milonga" && b.type === "festival")) &&
-    sameCity(a, b)
+    sameCity(a, b) &&
+    datesNearOrOverlap(a, b)
   ) {
     return true;
   }
 
   if (a.start_date !== b.start_date || a.end_date !== b.end_date) return false;
+  if (!sameCity(a, b)) return false;
 
   return titlesLikelyMatch(a, b);
 }
