@@ -78,6 +78,8 @@ async function searchForEvents(today: string): Promise<ParsedSearchResult> {
 
   const prompt = `오늘은 ${today}입니다. 웹 검색 도구를 사용해서 오늘 이후로 미국에서 열리는 아르헨티나 탱고 엔쿠엔트로, 밀롱가, 마라톤, 페스티벌 정보를 최대한 찾아주세요.
 
+- 답변하기 전에 반드시 web_search 도구를 여러 번 호출해서 실제로 검색하세요. 검색 없이 아는 정보만으로 답하거나 빈 결과를 반환하지 마세요.
+- 다음 도시들 각각에 대해 최소 한 번 이상 검색하세요: 뉴욕, 보스턴, 로스앤젤레스, 샌프란시스코, 시애틀, 포틀랜드, 밴쿠버, 샌디에고, 시카고, 뉴올리언스, 마이애미. (단, 이 도시들 외 지역의 행사도 발견되면 포함하세요.)
 - 이미 지난 행사는 제외하고, 오늘부터 앞으로 몇 달 내에 열리는 행사만 포함하세요.
 - 각 항목의 제목과 설명은 원문(영어)과 한국어 번역을 함께 제공하세요.
 - 확실하지 않은 정보(정확한 주소, 가격 등)는 null로 남기고, 추측해서 채우지 마세요.
@@ -85,15 +87,22 @@ async function searchForEvents(today: string): Promise<ParsedSearchResult> {
 
   let messages: Anthropic.MessageParam[] = [{ role: "user", content: prompt }];
 
-  for (let attempt = 0; attempt < 3; attempt++) {
+  for (let attempt = 0; attempt < 10; attempt++) {
     const response = await client.messages.parse({
       model: "claude-haiku-4-5",
       max_tokens: 8000,
-      tools: [{ type: "web_search_20260209", name: "web_search", max_uses: 10 }],
+      tools: [
+        {
+          type: "web_search_20260209",
+          name: "web_search",
+          max_uses: 10,
+          allowed_callers: ["direct"],
+        },
+      ],
       output_config: {
         format: zodOutputFormat(SearchResultSchema),
-        effort: "high",
       },
+      tool_choice: attempt === 0 ? { type: "tool", name: "web_search" } : { type: "auto" },
       messages,
     });
 
