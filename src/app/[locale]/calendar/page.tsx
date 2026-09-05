@@ -1,7 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
-import { resolveCityContext } from "@/lib/events/city-context";
 import { getMonthEvents } from "@/lib/events/queries";
 import EventFilters from "@/components/events/event-filters";
 import EventCalendar from "@/components/events/event-calendar";
@@ -38,11 +37,7 @@ export default async function CalendarPage({
   const monthEndDate = new Date(Date.UTC(year, month + 1, 0));
   const monthEnd = monthEndDate.toISOString().slice(0, 10);
 
-  const cityCtx = await resolveCityContext();
-
   const events = await getMonthEvents({
-    city: cityCtx.selected?.city,
-    state: cityCtx.selected?.state,
     type,
     monthStart,
     monthEnd,
@@ -58,8 +53,6 @@ export default async function CalendarPage({
         이벤트 캘린더
       </h1>
       <EventFilters
-        cityOptions={cityCtx.options}
-        selectedCity={cityCtx.selected}
         currentType={type}
         basePath="/calendar"
         extraQuery={extraQuery}
