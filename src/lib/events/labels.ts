@@ -32,3 +32,13 @@ export function formatEventDateRange(
 
   return `${startStr}~${endStr}`;
 }
+
+// Raw price text often carries extra description ("$45 early bird, $60 at
+// door, includes Saturday party") — the table column only has room for the
+// numbers themselves.
+export function formatPrice(price: string | null): string | null {
+  if (!price) return null;
+  const amounts = price.match(/\$\d+(?:,\d{3})*(?:\.\d+)?/g);
+  if (!amounts) return null;
+  return amounts.join(" / ");
+}

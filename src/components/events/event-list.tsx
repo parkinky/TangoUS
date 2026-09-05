@@ -1,5 +1,5 @@
 import type { EventRow } from "@/lib/events/queries";
-import { formatEventDateRange } from "@/lib/events/labels";
+import { formatEventDateRange, formatPrice } from "@/lib/events/labels";
 import { mergeEvents } from "@/lib/events/merge-events";
 
 export default function EventList({
@@ -58,7 +58,7 @@ export default function EventList({
                 {row.address ?? "TBD"}
               </td>
               <td className="border border-zinc-200 p-2 whitespace-nowrap text-zinc-700 dark:border-zinc-800 dark:text-zinc-300">
-                {row.price ?? "TBD"}
+                {formatPrice(row.price) ?? "TBD"}
               </td>
               <td className="border border-zinc-200 p-2 whitespace-nowrap dark:border-zinc-800">
                 {row.websiteUrl && (
