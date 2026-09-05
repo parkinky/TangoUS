@@ -115,7 +115,14 @@ async function searchForEvents(today: string): Promise<ParsedSearchResult> {
         {
           type: "web_search_20260209",
           name: "web_search",
-          max_uses: 10,
+          // Must comfortably cover one search per required city (14) plus
+          // room for extra searches on events found outside that list.
+          // With max_uses below the required-city count, the model was
+          // hitting the cap mid-run, pausing, and resuming in a fresh
+          // request — several of those round trips (each re-sending the
+          // growing conversation) were blowing through the 300s function
+          // budget before a single run could finish.
+          max_uses: 25,
           allowed_callers: ["direct"],
         },
       ],
