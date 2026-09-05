@@ -1,18 +1,6 @@
 import type { EventRow } from "@/lib/events/queries";
-import { localizedTitle } from "@/lib/events/queries";
-import { EVENT_TYPE_LABELS, formatEventDateRange } from "@/lib/events/labels";
-
-function eventLine(event: EventRow, locale: string): string {
-  const parts = [
-    formatEventDateRange(event.start_date, event.end_date),
-    event.type ? EVENT_TYPE_LABELS[event.type] : "",
-    localizedTitle(event, locale),
-    event.city ?? "",
-    event.state ?? "",
-    event.address ?? event.venue ?? "",
-  ];
-  return parts.join(" / ");
-}
+import { formatEventDateRange } from "@/lib/events/labels";
+import { mergeEvents } from "@/lib/events/merge-events";
 
 export default function EventList({
   events,
@@ -29,29 +17,62 @@ export default function EventList({
     );
   }
 
+  const rows = mergeEvents(events, locale);
+
   return (
-    <ul className="w-full max-w-3xl space-y-2">
-      {events.map((event) => (
-        <li
-          key={event.id}
-          className="rounded-md border border-zinc-200 p-2 text-sm text-zinc-700 dark:border-zinc-800 dark:text-zinc-300"
-        >
-          {eventLine(event, locale)}
-          {event.website_url && (
-            <>
-              {" / "}
-              <a
-                href={event.website_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline"
-              >
-                자세히 보기
-              </a>
-            </>
-          )}
-        </li>
-      ))}
-    </ul>
+    <div className="w-full max-w-6xl overflow-x-auto">
+      <table className="w-full min-w-[900px] border-collapse text-sm">
+        <thead>
+          <tr className="border-b-2 border-zinc-800 dark:border-zinc-200">
+            {["기간", "이벤트 종류", "이벤트 이름", "시", "주", "주소", "기타"].map(
+              (heading) => (
+                <th
+                  key={heading}
+                  className="border border-zinc-200 p-2 text-left font-semibold text-black dark:border-zinc-800 dark:text-zinc-50"
+                >
+                  {heading}
+                </th>
+              )
+            )}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr key={row.id}>
+              <td className="border border-zinc-200 p-2 whitespace-nowrap text-zinc-700 dark:border-zinc-800 dark:text-zinc-300">
+                {formatEventDateRange(row.start_date, row.end_date)}
+              </td>
+              <td className="border border-zinc-200 p-2 whitespace-nowrap text-zinc-700 dark:border-zinc-800 dark:text-zinc-300">
+                {row.categoryLabel}
+              </td>
+              <td className="border border-zinc-200 p-2 text-black dark:border-zinc-800 dark:text-zinc-50">
+                {row.title}
+              </td>
+              <td className="border border-zinc-200 p-2 text-zinc-700 dark:border-zinc-800 dark:text-zinc-300">
+                {row.city}
+              </td>
+              <td className="border border-zinc-200 p-2 text-zinc-700 dark:border-zinc-800 dark:text-zinc-300">
+                {row.state}
+              </td>
+              <td className="border border-zinc-200 p-2 text-zinc-700 dark:border-zinc-800 dark:text-zinc-300">
+                {row.address}
+              </td>
+              <td className="border border-zinc-200 p-2 whitespace-nowrap dark:border-zinc-800">
+                {row.websiteUrl && (
+                  <a
+                    href={row.websiteUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline"
+                  >
+                    자세히 보기
+                  </a>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
