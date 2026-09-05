@@ -4,19 +4,19 @@ import { Link } from "@/i18n/navigation";
 import { setCityFilter } from "@/lib/events/actions";
 import type { CityOption } from "@/lib/events/city-context";
 import type { EventType } from "@/lib/events/queries";
+import { EVENT_TYPE_LABELS } from "@/lib/events/labels";
 
-const TYPE_OPTIONS: { value: EventType | undefined; label: string }[] = [
-  { value: undefined, label: "전체" },
-  { value: "event", label: "엔쿠엔트로" },
-  { value: "festival", label: "페스티벌" },
-  { value: "marathon", label: "마라톤" },
-  { value: "milonga", label: "밀롱가" },
-];
+const ORDERED_TYPES: EventType[] = ["festival", "marathon", "milonga", "event"];
 
 function cityValue(option: { city: string; state: string | null } | null) {
   if (!option) return "";
   return `${option.city}|${option.state ?? ""}`;
 }
+
+const activeClass =
+  "rounded-full bg-black px-3 py-1 text-sm font-medium text-white dark:bg-zinc-50 dark:text-black";
+const inactiveClass =
+  "rounded-full border border-zinc-300 px-3 py-1 text-sm text-zinc-700 dark:border-zinc-700 dark:text-zinc-300";
 
 export default function EventFilters({
   cityOptions,
@@ -38,11 +38,15 @@ export default function EventFilters({
   const showSelectedFallback = Boolean(selectedCity) && !hasSelectedInOptions;
 
   return (
-    <div className="w-full max-w-3xl space-y-3">
-      <form action={setCityFilter} className="flex items-center gap-2">
-        <label htmlFor="city" className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-          도시
-        </label>
+    <div className="flex w-full max-w-3xl flex-wrap items-center gap-2">
+      <Link
+        href={{ pathname: basePath, query: { ...extraQuery } }}
+        className={!currentType ? activeClass : inactiveClass}
+      >
+        전체
+      </Link>
+
+      <form action={setCityFilter} className="flex items-center gap-1">
         <select
           id="city"
           name="city"
@@ -64,26 +68,19 @@ export default function EventFilters({
         </select>
       </form>
 
-      <div className="flex flex-wrap gap-2">
-        {TYPE_OPTIONS.map((option) => {
-          const isActive = (currentType ?? "") === (option.value ?? "");
-          const query: Record<string, string> = { ...extraQuery };
-          if (option.value) query.type = option.value;
-          return (
-            <Link
-              key={option.label}
-              href={{ pathname: basePath, query }}
-              className={
-                isActive
-                  ? "rounded-full bg-black px-3 py-1 text-sm font-medium text-white dark:bg-zinc-50 dark:text-black"
-                  : "rounded-full border border-zinc-300 px-3 py-1 text-sm text-zinc-700 dark:border-zinc-700 dark:text-zinc-300"
-              }
-            >
-              {option.label}
-            </Link>
-          );
-        })}
-      </div>
+      {ORDERED_TYPES.map((type) => {
+        const isActive = currentType === type;
+        const query: Record<string, string> = { ...extraQuery, type };
+        return (
+          <Link
+            key={type}
+            href={{ pathname: basePath, query }}
+            className={isActive ? activeClass : inactiveClass}
+          >
+            {EVENT_TYPE_LABELS[type]}
+          </Link>
+        );
+      })}
     </div>
   );
 }
