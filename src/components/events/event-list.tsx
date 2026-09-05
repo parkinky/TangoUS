@@ -45,7 +45,11 @@ export default function EventList({
                 ))}
               </td>
               <td className="border border-zinc-200 p-2 whitespace-nowrap text-zinc-700 dark:border-zinc-800 dark:text-zinc-300">
-                {row.categoryLabel}
+                {row.categoryLabel.includes("+")
+                  ? row.categoryLabel.split("+").map((part, i) => (
+                      <div key={i}>{i === 0 ? part : ` +${part}`}</div>
+                    ))
+                  : row.categoryLabel}
               </td>
               <td className="border border-zinc-200 p-2 text-black dark:border-zinc-800 dark:text-zinc-50">
                 {row.title}
