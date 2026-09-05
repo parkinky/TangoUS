@@ -13,16 +13,18 @@ function dateParts(dateStr: string) {
   return { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate(), weekday };
 }
 
+// A single day renders as one line; a range renders as two lines — the
+// start date with a trailing "~", and the end date below it.
 export function formatEventDateRange(
   startDate: string | null,
   endDate: string | null
-): string {
-  if (!startDate) return "날짜 미정";
+): [string] | [string, string] {
+  if (!startDate) return ["날짜 미정"];
 
   const start = dateParts(startDate);
   const startStr = `${start.year}년${start.month}월${start.day}일(${start.weekday})`;
 
-  if (!endDate || endDate === startDate) return startStr;
+  if (!endDate || endDate === startDate) return [startStr];
 
   const end = dateParts(endDate);
   const endStr =
@@ -30,7 +32,7 @@ export function formatEventDateRange(
       ? `${end.month}월${end.day}일(${end.weekday})`
       : `${end.year}년${end.month}월${end.day}일(${end.weekday})`;
 
-  return `${startStr}~${endStr}`;
+  return [`${startStr}~`, endStr];
 }
 
 // Raw price text often carries extra description ("$45 early bird, $60 at

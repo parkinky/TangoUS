@@ -40,7 +40,9 @@ export default function EventList({
           {rows.map((row) => (
             <tr key={row.id}>
               <td className="border border-zinc-200 p-2 whitespace-nowrap text-zinc-700 dark:border-zinc-800 dark:text-zinc-300">
-                {formatEventDateRange(row.start_date, row.end_date)}
+                {formatEventDateRange(row.start_date, row.end_date).map((line) => (
+                  <div key={line}>{line}</div>
+                ))}
               </td>
               <td className="border border-zinc-200 p-2 whitespace-nowrap text-zinc-700 dark:border-zinc-800 dark:text-zinc-300">
                 {row.categoryLabel}
