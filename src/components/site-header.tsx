@@ -1,8 +1,10 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { getAdminUser } from "@/lib/auth/admin";
 
 export default async function SiteHeader() {
   const t = await getTranslations("Nav");
+  const admin = await getAdminUser();
 
   return (
     <header className="flex items-center justify-between border-b border-zinc-200 px-6 py-4 dark:border-zinc-800">
@@ -12,6 +14,8 @@ export default async function SiteHeader() {
       <nav className="flex items-center gap-4 text-sm text-zinc-700 dark:text-zinc-300">
         <Link href="/events">{t("events")}</Link>
         <Link href="/calendar">{t("calendar")}</Link>
+        <Link href="/submit">{t("submit")}</Link>
+        {admin && <Link href="/admin">관리자</Link>}
         <Link href="/login">{t("login")}</Link>
         <Link href="/signup">{t("signup")}</Link>
       </nav>
