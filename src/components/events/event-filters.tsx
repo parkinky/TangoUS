@@ -6,7 +6,8 @@ import type { CityOption } from "@/lib/events/city-context";
 import type { EventType } from "@/lib/events/queries";
 import { EVENT_TYPE_LABELS } from "@/lib/events/labels";
 
-const ORDERED_TYPES: EventType[] = ["festival", "marathon", "milonga", "event"];
+const ORDERED_TYPES: EventType[] = ["festival", "marathon", "event", "milonga"];
+const PERIOD_MONTHS = [3, 6, 12] as const;
 
 function cityValue(option: { city: string; state: string | null } | null) {
   if (!option) return "";
@@ -24,12 +25,14 @@ export default function EventFilters({
   currentType,
   basePath,
   extraQuery = {},
+  period,
 }: {
   cityOptions: CityOption[];
   selectedCity: { city: string; state: string | null } | null;
   currentType?: string;
   basePath: "/events" | "/calendar";
   extraQuery?: Record<string, string>;
+  period?: { months: (typeof PERIOD_MONTHS)[number]; endLabel: string };
 }) {
   const selectedValue = cityValue(selectedCity);
   const hasSelectedInOptions = cityOptions.some(
@@ -39,6 +42,31 @@ export default function EventFilters({
 
   return (
     <div className="flex w-full max-w-3xl flex-wrap items-center gap-2">
+      {period && (
+        <>
+          <span className="text-sm text-zinc-500 dark:text-zinc-500">
+            검색기간: 오늘(시작) ~ {period.endLabel}(끝)
+          </span>
+          {PERIOD_MONTHS.map((m) => {
+            const isActive = period.months === m;
+            const query: Record<string, string> = {
+              ...extraQuery,
+              ...(currentType ? { type: currentType } : {}),
+              months: String(m),
+            };
+            return (
+              <Link
+                key={m}
+                href={{ pathname: basePath, query }}
+                className={isActive ? activeClass : inactiveClass}
+              >
+                {m}개월
+              </Link>
+            );
+          })}
+        </>
+      )}
+
       <Link
         href={{ pathname: basePath, query: { ...extraQuery } }}
         className={!currentType ? activeClass : inactiveClass}

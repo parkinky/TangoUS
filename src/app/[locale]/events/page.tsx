@@ -9,6 +9,15 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+const ALLOWED_MONTHS = [3, 6, 12] as const;
+
+function parseMonthsParam(raw: string | undefined): (typeof ALLOWED_MONTHS)[number] {
+  const n = Number(raw);
+  return (ALLOWED_MONTHS as readonly number[]).includes(n)
+    ? (n as (typeof ALLOWED_MONTHS)[number])
+    : 12;
+}
+
 export default async function EventsPage({
   params,
   searchParams,
@@ -18,6 +27,18 @@ export default async function EventsPage({
 
   const sp = await searchParams;
   const type = typeof sp.type === "string" ? sp.type : undefined;
+  const months = parseMonthsParam(
+    typeof sp.months === "string" ? sp.months : undefined
+  );
+
+  const now = new Date();
+  const cutoff = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + months, now.getUTCDate())
+  );
+  const beforeDate = cutoff.toISOString().slice(0, 10);
+  const periodEndLabel = `${cutoff.getUTCFullYear()}년 ${cutoff.getUTCMonth() + 1}월`;
+
+  const extraQuery: Record<string, string> = { months: String(months) };
 
   const cityCtx = await resolveCityContext();
 
@@ -25,6 +46,7 @@ export default async function EventsPage({
     city: cityCtx.selected?.city,
     state: cityCtx.selected?.state,
     type,
+    beforeDate,
   });
 
   return (
@@ -37,6 +59,8 @@ export default async function EventsPage({
         selectedCity={cityCtx.selected}
         currentType={type}
         basePath="/events"
+        extraQuery={extraQuery}
+        period={{ months, endLabel: periodEndLabel }}
       />
       <p className="text-sm text-zinc-500 dark:text-zinc-500">
         {cityCtx.selected

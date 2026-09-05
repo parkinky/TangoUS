@@ -41,7 +41,8 @@ export async function getUpcomingEvents({
   city,
   state,
   type,
-}: CityFilter): Promise<EventRow[]> {
+  beforeDate,
+}: CityFilter & { beforeDate?: string }): Promise<EventRow[]> {
   const supabase = await createClient();
   let query = supabase
     .from("events")
@@ -54,6 +55,7 @@ export async function getUpcomingEvents({
   if (city) query = query.eq("city", city);
   if (state) query = query.eq("state", state);
   if (type) query = query.eq("type", type);
+  if (beforeDate) query = query.lte("start_date", beforeDate);
 
   const { data } = await query;
   return (data as EventRow[]) ?? [];
