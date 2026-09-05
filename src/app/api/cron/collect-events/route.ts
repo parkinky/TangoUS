@@ -16,7 +16,9 @@ const ScrapedEventSchema = z.object({
   title_ko: z.string().describe("Korean translation of the title"),
   type: z.enum(EVENT_TYPES),
   city: z.string(),
-  state: z.string().describe("US state, as a 2-letter abbreviation, e.g. TX"),
+  state: z.string().describe(
+    "US state or Canadian province, as a 2-letter abbreviation, e.g. TX, BC, ON, QC"
+  ),
   venue: z.string().nullable().describe("Venue name, null if unknown"),
   address: z.string().nullable().describe("Street address, null if unknown"),
   start_date: z.string().describe("ISO date, YYYY-MM-DD"),
@@ -92,10 +94,11 @@ function isAuthorized(request: NextRequest): boolean {
 async function searchForEvents(today: string): Promise<ParsedSearchResult> {
   const client = new Anthropic();
 
-  const prompt = `오늘은 ${today}입니다. 웹 검색 도구를 사용해서 오늘 이후로 미국에서 열리는 아르헨티나 탱고 엔쿠엔트로, 밀롱가, 마라톤, 페스티벌 정보를 최대한 찾아주세요.
+  const prompt = `오늘은 ${today}입니다. 웹 검색 도구를 사용해서 오늘 이후로 미국과 캐나다에서 열리는 아르헨티나 탱고 엔쿠엔트로, 밀롱가, 마라톤, 페스티벌 정보를 최대한 찾아주세요.
 
 - 답변하기 전에 반드시 web_search 도구를 여러 번 호출해서 실제로 검색하세요. 검색 없이 아는 정보만으로 답하거나 빈 결과를 반환하지 마세요.
-- 다음 도시들 각각에 대해 최소 한 번 이상 검색하세요: 뉴욕, 보스턴, 로스앤젤레스, 샌프란시스코, 시애틀, 포틀랜드, 밴쿠버, 샌디에고, 시카고, 뉴올리언스, 마이애미. (단, 이 도시들 외 지역의 행사도 발견되면 포함하세요.)
+- 다음 도시들 각각에 대해 최소 한 번 이상 검색하세요: 뉴욕, 보스턴, 로스앤젤레스, 샌프란시스코, 시애틀, 포틀랜드, 밴쿠버(워싱턴주), 샌디에고, 시카고, 뉴올리언스, 마이애미, 밴쿠버(브리티시컬럼비아, 캐나다), 토론토, 몬트리올. (단, 이 도시들 외 지역의 행사도 발견되면 포함하세요.)
+- 캐나다 행사는 city에 도시명, state에 주(province) 2자리 약자(예: BC, ON, QC)를 사용하세요.
 - 이미 지난 행사는 제외하고, 오늘부터 앞으로 몇 달 내에 열리는 행사만 포함하세요.
 - 각 항목의 제목과 설명은 원문(영어)과 한국어 번역을 함께 제공하세요.
 - 확실하지 않은 정보(정확한 주소, 가격 등)는 null로 남기고, 추측해서 채우지 마세요.
