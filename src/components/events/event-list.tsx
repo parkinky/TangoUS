@@ -1,8 +1,20 @@
 import type { EventRow, EventType } from "@/lib/events/queries";
 import { localizedTitle } from "@/lib/events/queries";
-import { EVENT_TYPE_LABELS, formatDateHeading } from "@/lib/events/labels";
+import { EVENT_TYPE_LABELS, formatEventDateRange } from "@/lib/events/labels";
 
 const COLUMN_TYPES: EventType[] = ["event", "festival", "marathon", "milonga"];
+
+function eventLine(event: EventRow, type: EventType, locale: string): string {
+  const parts = [
+    formatEventDateRange(event.start_date, event.end_date),
+    EVENT_TYPE_LABELS[type],
+    localizedTitle(event, locale),
+    event.address ?? event.venue ?? "",
+    event.city ?? "",
+    event.state ?? "",
+  ];
+  return parts.join(" / ");
+}
 
 export default function EventList({
   events,
@@ -45,35 +57,21 @@ export default function EventList({
                 {typeEvents.map((event) => (
                   <li
                     key={event.id}
-                    className="rounded-md border border-zinc-200 p-3 dark:border-zinc-800"
+                    className="rounded-md border border-zinc-200 p-2 text-sm text-zinc-700 dark:border-zinc-800 dark:text-zinc-300"
                   >
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                      {event.start_date
-                        ? formatDateHeading(event.start_date)
-                        : "날짜 미정"}
-                    </p>
-                    <p className="font-medium text-black dark:text-zinc-50">
-                      {localizedTitle(event, locale)}
-                    </p>
-                    <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                      {event.venue ? `${event.venue} · ` : ""}
-                      {event.city}
-                      {event.state ? `, ${event.state}` : ""}
-                    </p>
-                    {event.recurring && (
-                      <p className="text-sm text-zinc-500 dark:text-zinc-500">
-                        {event.recurring}
-                      </p>
-                    )}
+                    {eventLine(event, type, locale)}
                     {event.website_url && (
-                      <a
-                        href={event.website_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-1 inline-block text-sm underline"
-                      >
-                        자세히 보기
-                      </a>
+                      <>
+                        {" · "}
+                        <a
+                          href={event.website_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline"
+                        >
+                          자세히 보기
+                        </a>
+                      </>
                     )}
                   </li>
                 ))}
