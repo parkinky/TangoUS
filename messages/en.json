@@ -1,0 +1,57 @@
+{
+  "HomePage": {
+    "title": "Argentine Tango Events in the US",
+    "description": "Find tango events, festivals, marathons, and milongas across the United States in one place."
+  },
+  "Nav": {
+    "home": "Home",
+    "events": "Events",
+    "calendar": "Calendar",
+    "submit": "Submit Event",
+    "login": "Log In",
+    "signup": "Sign Up"
+  },
+  "Auth": {
+    "signup": {
+      "title": "Sign Up",
+      "step1": "Account",
+      "step2": "Profile",
+      "step3": "Security Questions",
+      "username": "Username",
+      "email": "Email",
+      "password": "Password",
+      "address": "Address",
+      "phoneNumber": "Phone Number",
+      "name": "Name",
+      "gender": "Gender",
+      "genderOptions": {
+        "male": "Male",
+        "female": "Female",
+        "other": "Other"
+      },
+      "tangoRole": "Leader/Follower",
+      "tangoRoleOptions": {
+        "leader": "Leader",
+        "follower": "Follower"
+      },
+      "hintIntro": "Set up 3 security questions to verify your identity if you forget your username or password.",
+      "hintQuestion": "Question {index}",
+      "hintAnswer": "Answer {index}",
+      "next": "Next",
+      "back": "Back",
+      "submit": "Sign Up",
+      "submitting": "Signing up...",
+      "haveAccount": "Already have an account?",
+      "loginLink": "Log in"
+    },
+    "login": {
+      "title": "Log In",
+      "identifier": "Username or Email",
+      "password": "Password",
+      "submit": "Log In",
+      "submitting": "Logging in...",
+      "noAccount": "Don't have an account?",
+      "signupLink": "Sign up"
+    }
+  }
+}

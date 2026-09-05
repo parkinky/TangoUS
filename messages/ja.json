@@ -1,0 +1,57 @@
+{
+  "HomePage": {
+    "title": "米国のアルゼンチンタンゴイベント",
+    "description": "米国各地のタンゴイベント、フェスティバル、マラソン、ミロンガの情報を一か所でご確認いただけます。"
+  },
+  "Nav": {
+    "home": "ホーム",
+    "events": "イベント",
+    "calendar": "カレンダー",
+    "submit": "イベント登録",
+    "login": "ログイン",
+    "signup": "会員登録"
+  },
+  "Auth": {
+    "signup": {
+      "title": "会員登録",
+      "step1": "アカウント情報",
+      "step2": "プロフィール情報",
+      "step3": "秘密の質問",
+      "username": "ユーザーID",
+      "email": "メールアドレス",
+      "password": "パスワード",
+      "address": "住所",
+      "phoneNumber": "電話番号",
+      "name": "名前",
+      "gender": "性別",
+      "genderOptions": {
+        "male": "男性",
+        "female": "女性",
+        "other": "その他"
+      },
+      "tangoRole": "リーダー/フォロワー",
+      "tangoRoleOptions": {
+        "leader": "リーダー",
+        "follower": "フォロワー"
+      },
+      "hintIntro": "ID・パスワードを忘れた場合の本人確認用に、秘密の質問を3つ設定してください。",
+      "hintQuestion": "質問 {index}",
+      "hintAnswer": "回答 {index}",
+      "next": "次へ",
+      "back": "戻る",
+      "submit": "登録する",
+      "submitting": "登録処理中...",
+      "haveAccount": "すでにアカウントをお持ちですか?",
+      "loginLink": "ログイン"
+    },
+    "login": {
+      "title": "ログイン",
+      "identifier": "ユーザーIDまたはメールアドレス",
+      "password": "パスワード",
+      "submit": "ログイン",
+      "submitting": "ログイン中...",
+      "noAccount": "アカウントをお持ちでないですか?",
+      "signupLink": "会員登録"
+    }
+  }
+}

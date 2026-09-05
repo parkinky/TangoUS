@@ -1,0 +1,57 @@
+{
+  "HomePage": {
+    "title": "美国阿根廷探戈活动",
+    "description": "在这里一站式查看美国各地的探戈活动、节日、马拉松和米隆加信息。"
+  },
+  "Nav": {
+    "home": "首页",
+    "events": "活动",
+    "calendar": "日历",
+    "submit": "提交活动",
+    "login": "登录",
+    "signup": "注册"
+  },
+  "Auth": {
+    "signup": {
+      "title": "注册",
+      "step1": "账户信息",
+      "step2": "个人资料",
+      "step3": "安全问题",
+      "username": "用户名",
+      "email": "邮箱",
+      "password": "密码",
+      "address": "地址",
+      "phoneNumber": "手机号码",
+      "name": "姓名",
+      "gender": "性别",
+      "genderOptions": {
+        "male": "男",
+        "female": "女",
+        "other": "其他"
+      },
+      "tangoRole": "领舞/跟舞",
+      "tangoRoleOptions": {
+        "leader": "领舞",
+        "follower": "跟舞"
+      },
+      "hintIntro": "请设置3个安全问题，用于在您忘记用户名或密码时验证身份。",
+      "hintQuestion": "问题 {index}",
+      "hintAnswer": "答案 {index}",
+      "next": "下一步",
+      "back": "上一步",
+      "submit": "注册",
+      "submitting": "正在注册...",
+      "haveAccount": "已有账户?",
+      "loginLink": "登录"
+    },
+    "login": {
+      "title": "登录",
+      "identifier": "用户名或邮箱",
+      "password": "密码",
+      "submit": "登录",
+      "submitting": "正在登录...",
+      "noAccount": "还没有账户?",
+      "signupLink": "注册"
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "HomePage": {
+    "title": "Eventos de Tango Argentino en EE. UU.",
+    "description": "Encuentra eventos, festivales, maratones y milongas de tango en todo Estados Unidos en un solo lugar."
+  },
+  "Nav": {
+    "home": "Inicio",
+    "events": "Eventos",
+    "calendar": "Calendario",
+    "submit": "Registrar Evento",
+    "login": "Iniciar Sesión",
+    "signup": "Registrarse"
+  },
+  "Auth": {
+    "signup": {
+      "title": "Registrarse",
+      "step1": "Cuenta",
+      "step2": "Perfil",
+      "step3": "Preguntas de Seguridad",
+      "username": "Nombre de usuario",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "address": "Dirección",
+      "phoneNumber": "Número de teléfono",
+      "name": "Nombre",
+      "gender": "Género",
+      "genderOptions": {
+        "male": "Masculino",
+        "female": "Femenino",
+        "other": "Otro"
+      },
+      "tangoRole": "Líder/Seguidor",
+      "tangoRoleOptions": {
+        "leader": "Líder",
+        "follower": "Seguidor"
+      },
+      "hintIntro": "Configura 3 preguntas de seguridad para verificar tu identidad si olvidas tu usuario o contraseña.",
+      "hintQuestion": "Pregunta {index}",
+      "hintAnswer": "Respuesta {index}",
+      "next": "Siguiente",
+      "back": "Atrás",
+      "submit": "Registrarse",
+      "submitting": "Registrando...",
+      "haveAccount": "¿Ya tienes una cuenta?",
+      "loginLink": "Iniciar sesión"
+    },
+    "login": {
+      "title": "Iniciar Sesión",
+      "identifier": "Usuario o correo electrónico",
+      "password": "Contraseña",
+      "submit": "Iniciar Sesión",
+      "submitting": "Iniciando sesión...",
+      "noAccount": "¿No tienes una cuenta?",
+      "signupLink": "Regístrate"
+    }
+  }
+}

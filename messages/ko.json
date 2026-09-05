@@ -1,0 +1,57 @@
+{
+  "HomePage": {
+    "title": "미국 아르헨티나 탱고 이벤트",
+    "description": "미국 전역의 탱고 이벤트, 페스티벌, 마라톤, 밀롱가 정보를 한곳에서 확인하세요."
+  },
+  "Nav": {
+    "home": "홈",
+    "events": "이벤트",
+    "calendar": "캘린더",
+    "submit": "이벤트 등록",
+    "login": "로그인",
+    "signup": "회원가입"
+  },
+  "Auth": {
+    "signup": {
+      "title": "회원가입",
+      "step1": "계정 정보",
+      "step2": "프로필 정보",
+      "step3": "보안 질문",
+      "username": "아이디",
+      "email": "이메일",
+      "password": "비밀번호",
+      "address": "주소",
+      "phoneNumber": "휴대폰번호",
+      "name": "이름",
+      "gender": "성별",
+      "genderOptions": {
+        "male": "남성",
+        "female": "여성",
+        "other": "기타"
+      },
+      "tangoRole": "리더/팔로워",
+      "tangoRoleOptions": {
+        "leader": "리더",
+        "follower": "팔로워"
+      },
+      "hintIntro": "아이디/비밀번호를 잊어버렸을 때 본인 확인에 사용할 보안 질문 3개를 설정해주세요.",
+      "hintQuestion": "질문 {index}",
+      "hintAnswer": "답변 {index}",
+      "next": "다음",
+      "back": "이전",
+      "submit": "가입하기",
+      "submitting": "가입 처리 중...",
+      "haveAccount": "이미 계정이 있으신가요?",
+      "loginLink": "로그인"
+    },
+    "login": {
+      "title": "로그인",
+      "identifier": "아이디 또는 이메일",
+      "password": "비밀번호",
+      "submit": "로그인",
+      "submitting": "로그인 중...",
+      "noAccount": "계정이 없으신가요?",
+      "signupLink": "회원가입"
+    }
+  }
+}
