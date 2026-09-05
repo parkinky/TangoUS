@@ -14,7 +14,7 @@ function dateParts(dateStr: string) {
 }
 
 // A single day renders as one line; a range renders as two lines — the
-// start date with a trailing "~", and the end date below it.
+// start date, and the end date below it prefixed with "~".
 export function formatEventDateRange(
   startDate: string | null,
   endDate: string | null
@@ -32,7 +32,7 @@ export function formatEventDateRange(
       ? `${end.month}월${end.day}일(${end.weekday})`
       : `${end.year}년${end.month}월${end.day}일(${end.weekday})`;
 
-  return [`${startStr}~`, endStr];
+  return [startStr, `~${endStr}`];
 }
 
 // Raw price text often carries extra description ("$45 early bird, $60 at
