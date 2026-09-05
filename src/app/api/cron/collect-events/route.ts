@@ -4,6 +4,7 @@ import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { z } from "zod";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { titlesLikelyMatch } from "@/lib/events/title-similarity";
 
 // Web search + a fairly long structured-output turn can take a while.
 export const maxDuration = 300;
@@ -55,7 +56,7 @@ async function findExistingEvent(
     if (data) return data;
   }
 
-  const { data } = await supabase
+  const { data: exactMatch } = await supabase
     .from("events")
     .select("id")
     .eq("city", event.city)
@@ -63,8 +64,23 @@ async function findExistingEvent(
     .eq("start_date", event.start_date)
     .eq("end_date", event.end_date ?? event.start_date)
     .maybeSingle();
+  if (exactMatch) return exactMatch;
 
-  return data;
+  // A later run can pick up the same real-world event with different (or
+  // outright wrong) scraped dates — e.g. an early listing superseded by the
+  // organizer's official schedule. An exact date match won't catch that, so
+  // also check by name within the same city before treating it as new.
+  const { data: sameCityEvents } = await supabase
+    .from("events")
+    .select("id, title_en, title_ko")
+    .eq("city", event.city)
+    .eq("state", event.state);
+
+  const fuzzyMatch = (sameCityEvents ?? []).find((existing) =>
+    titlesLikelyMatch(existing, { title_en: event.title_en, title_ko: event.title_ko })
+  );
+
+  return fuzzyMatch ? { id: fuzzyMatch.id } : null;
 }
 
 function isAuthorized(request: NextRequest): boolean {
