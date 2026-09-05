@@ -87,7 +87,7 @@ async function searchForEvents(today: string): Promise<ParsedSearchResult> {
 
   for (let attempt = 0; attempt < 3; attempt++) {
     const response = await client.messages.parse({
-      model: "claude-opus-5",
+      model: "claude-haiku-4-5",
       max_tokens: 8000,
       tools: [{ type: "web_search_20260209", name: "web_search", max_uses: 10 }],
       output_config: {
