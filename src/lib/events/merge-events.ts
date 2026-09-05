@@ -92,6 +92,7 @@ export type MergedEvent = {
   city: string | null;
   state: string | null;
   address: string | null;
+  price: string | null;
   websiteUrl: string | null;
 };
 
@@ -151,6 +152,7 @@ export function mergeEvents(events: EventRow[], locale: string): MergedEvent[] {
     }
 
     const websiteUrl = group.find((e) => e.website_url)?.website_url ?? null;
+    const price = representative.price ?? group.find((e) => e.price)?.price ?? null;
 
     // The merged group can span dates wider than any single row (a festival
     // plus a pre-festival milonga the day before, say), so use the full span
@@ -176,6 +178,7 @@ export function mergeEvents(events: EventRow[], locale: string): MergedEvent[] {
       city: representative.city,
       state: representative.state,
       address: representative.address ?? representative.venue ?? null,
+      price,
       websiteUrl,
     };
   });

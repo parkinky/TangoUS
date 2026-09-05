@@ -24,7 +24,7 @@ export default function EventList({
       <table className="w-full min-w-[900px] border-collapse text-sm">
         <thead>
           <tr className="border-b-2 border-zinc-800 dark:border-zinc-200">
-            {["기간", "이벤트 종류", "이벤트 이름", "시", "주", "주소", "기타"].map(
+            {["기간", "이벤트 종류", "이벤트 이름", "시", "주", "주소", "전체 비용", "기타"].map(
               (heading) => (
                 <th
                   key={heading}
@@ -56,6 +56,9 @@ export default function EventList({
               </td>
               <td className="border border-zinc-200 p-2 text-zinc-700 dark:border-zinc-800 dark:text-zinc-300">
                 {row.address ?? "TBD"}
+              </td>
+              <td className="border border-zinc-200 p-2 whitespace-nowrap text-zinc-700 dark:border-zinc-800 dark:text-zinc-300">
+                {row.price ?? "TBD"}
               </td>
               <td className="border border-zinc-200 p-2 whitespace-nowrap dark:border-zinc-800">
                 {row.websiteUrl && (
