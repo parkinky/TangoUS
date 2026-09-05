@@ -55,7 +55,7 @@ export default function EventList({
                 {row.state}
               </td>
               <td className="border border-zinc-200 p-2 text-zinc-700 dark:border-zinc-800 dark:text-zinc-300">
-                {row.address}
+                {row.address ?? "TBD"}
               </td>
               <td className="border border-zinc-200 p-2 whitespace-nowrap dark:border-zinc-800">
                 {row.websiteUrl && (
