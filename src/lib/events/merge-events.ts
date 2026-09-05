@@ -1,6 +1,6 @@
 import type { EventRow, EventType } from "./queries";
 import { localizedTitle } from "./queries";
-import { EVENT_TYPE_LABELS } from "./labels";
+import { eventTypeLabel, festivalMilongaLabel } from "./labels";
 import { titlesLikelyMatch } from "./title-similarity";
 
 function sameCity(a: EventRow, b: EventRow): boolean {
@@ -92,10 +92,8 @@ export function mergeEvents(events: EventRow[], locale: string): MergedEvent[] {
     );
 
     const categoryLabel = types.has("festival")
-      ? "페스티벌+밀롱가"
-      : EVENT_TYPE_LABELS[
-          TYPE_PRIORITY.find((t) => types.has(t)) ?? "event"
-        ];
+      ? festivalMilongaLabel(locale)
+      : eventTypeLabel(TYPE_PRIORITY.find((t) => types.has(t)) ?? "event", locale);
 
     let representative = group[0];
     for (const type of TYPE_PRIORITY) {

@@ -12,7 +12,7 @@ export default function EventList({
   if (events.length === 0) {
     return (
       <p className="text-sm text-zinc-600 dark:text-zinc-400">
-        예정된 이벤트가 없습니다.
+        {locale === "en" ? "No upcoming events." : "예정된 이벤트가 없습니다."}
       </p>
     );
   }
@@ -24,7 +24,10 @@ export default function EventList({
       <table className="w-full min-w-[900px] border-collapse text-sm">
         <thead>
           <tr className="border-b-2 border-zinc-800 dark:border-zinc-200">
-            {["기간", "이벤트", "이벤트 이름", "시", "주", "주소", "비용", "기타"].map(
+            {(locale === "en"
+              ? ["Dates", "Type", "Event Name", "City", "State", "Address", "Cost", "Other"]
+              : ["기간", "이벤트", "이벤트 이름", "시", "주", "주소", "비용", "기타"]
+            ).map(
               (heading) => (
                 <th
                   key={heading}
@@ -40,7 +43,7 @@ export default function EventList({
           {rows.map((row) => (
             <tr key={row.id}>
               <td className="border border-zinc-200 p-2 whitespace-nowrap text-zinc-700 dark:border-zinc-800 dark:text-zinc-300">
-                {formatEventDateRange(row.start_date, row.end_date).map((line) => (
+                {formatEventDateRange(row.start_date, row.end_date, locale).map((line) => (
                   <div key={line}>{line}</div>
                 ))}
               </td>
@@ -74,7 +77,7 @@ export default function EventList({
                     rel="noopener noreferrer"
                     className="underline"
                   >
-                    자세히 보기
+                    {locale === "en" ? "Details" : "자세히 보기"}
                   </a>
                 )}
               </td>

@@ -1,8 +1,6 @@
 import type { EventRow } from "@/lib/events/queries";
 import { localizedTitle, todayISODate } from "@/lib/events/queries";
-import { EVENT_TYPE_LABELS } from "@/lib/events/labels";
-
-const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
+import { eventTypeLabel, weekdayLabels } from "@/lib/events/labels";
 
 function chunk<T>(arr: T[], size: number): T[][] {
   const out: T[][] = [];
@@ -54,12 +52,14 @@ export default function EventCalendar({
   while (cells.length % 7 !== 0) cells.push(null);
   const weeks = chunk(cells, 7);
 
+  const weekdays = weekdayLabels(locale);
+
   return (
     <div className="w-full max-w-4xl overflow-x-auto">
       <table className="w-full min-w-[640px] table-fixed border-collapse text-sm">
         <thead>
           <tr>
-            {WEEKDAYS.map((w) => (
+            {weekdays.map((w) => (
               <th
                 key={w}
                 className="border border-zinc-200 p-2 text-zinc-500 dark:border-zinc-800 dark:text-zinc-400"
@@ -90,7 +90,7 @@ export default function EventCalendar({
                               key={event.id}
                               title={
                                 event.type
-                                  ? `${EVENT_TYPE_LABELS[event.type]}: ${localizedTitle(event, locale)}`
+                                  ? `${eventTypeLabel(event.type, locale)}: ${localizedTitle(event, locale)}`
                                   : localizedTitle(event, locale)
                               }
                               className="truncate rounded bg-zinc-100 px-1 text-xs text-black dark:bg-zinc-900 dark:text-zinc-50"
@@ -100,7 +100,9 @@ export default function EventCalendar({
                           ))}
                           {dayEvents.length > 3 && (
                             <li className="text-xs text-zinc-500 dark:text-zinc-400">
-                              +{dayEvents.length - 3}개 더보기
+                              {locale === "en"
+                                ? `+${dayEvents.length - 3} more`
+                                : `+${dayEvents.length - 3}개 더보기`}
                             </li>
                           )}
                         </ul>

@@ -1,8 +1,9 @@
 "use client";
 
+import { useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { EventType } from "@/lib/events/queries";
-import { EVENT_TYPE_LABELS } from "@/lib/events/labels";
+import { eventTypeLabel } from "@/lib/events/labels";
 
 const ORDERED_TYPES: EventType[] = ["festival", "marathon", "event", "milonga"];
 
@@ -20,13 +21,15 @@ export default function EventFilters({
   basePath: "/events" | "/calendar";
   extraQuery?: Record<string, string>;
 }) {
+  const locale = useLocale();
+
   return (
     <div className="flex w-full max-w-3xl flex-wrap items-center gap-2">
       <Link
         href={{ pathname: basePath, query: { ...extraQuery } }}
         className={!currentType ? activeClass : inactiveClass}
       >
-        전체
+        {locale === "en" ? "All" : "전체"}
       </Link>
 
       {ORDERED_TYPES.map((type) => {
@@ -38,7 +41,7 @@ export default function EventFilters({
             href={{ pathname: basePath, query }}
             className={isActive ? activeClass : inactiveClass}
           >
-            {EVENT_TYPE_LABELS[type]}
+            {eventTypeLabel(type, locale)}
           </Link>
         );
       })}

@@ -9,6 +9,11 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+const MONTH_NAMES_EN = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
+
 function monthParam(year: number, month: number) {
   return `${year}-${String(month + 1).padStart(2, "0")}`;
 }
@@ -50,7 +55,7 @@ export default async function CalendarPage({
   return (
     <div className="flex flex-1 flex-col items-center gap-6 bg-zinc-50 px-6 py-16 dark:bg-black">
       <h1 className="text-2xl font-semibold tracking-tight text-black dark:text-zinc-50">
-        이벤트 캘린더
+        {locale === "en" ? "Event Calendar" : "이벤트 캘린더"}
       </h1>
       <EventFilters
         currentType={type}
@@ -69,10 +74,12 @@ export default async function CalendarPage({
           }}
           className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm dark:border-zinc-700"
         >
-          이전 달
+          {locale === "en" ? "Prev" : "이전 달"}
         </Link>
         <p className="text-lg font-semibold text-black dark:text-zinc-50">
-          {year}년 {month + 1}월
+          {locale === "en"
+            ? `${MONTH_NAMES_EN[month]} ${year}`
+            : `${year}년 ${month + 1}월`}
         </p>
         <Link
           href={{
@@ -84,7 +91,7 @@ export default async function CalendarPage({
           }}
           className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm dark:border-zinc-700"
         >
-          다음 달
+          {locale === "en" ? "Next" : "다음 달"}
         </Link>
       </div>
 
