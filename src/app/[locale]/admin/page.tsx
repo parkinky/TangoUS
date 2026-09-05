@@ -69,7 +69,7 @@ export default async function AdminPage({
                   </p>
                   <p className="text-sm text-zinc-600 dark:text-zinc-400">
                     {event.venue ? `${event.venue} · ` : ""}
-                    {event.address}, {event.city}, {event.state}
+                    {event.address}, {event.city}, {event.state} ({event.nat})
                   </p>
                   {event.price && (
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">

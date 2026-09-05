@@ -98,6 +98,18 @@ export default function SubmitForm() {
             <p className={errorClass}>{state.errors.state}</p>
           )}
         </div>
+        <div className="w-24">
+          <label htmlFor="nat" className={labelClass}>
+            국가(NAT)
+          </label>
+          <select id="nat" name="nat" defaultValue="US" className={inputClass}>
+            <option value="US">US</option>
+            <option value="CA">CA</option>
+          </select>
+          {state?.errors?.nat && (
+            <p className={errorClass}>{state.errors.nat}</p>
+          )}
+        </div>
       </div>
 
       <div>

@@ -46,6 +46,7 @@ export type MergedEvent = {
   title: string;
   city: string | null;
   state: string | null;
+  nat: string | null;
   address: string | null;
   price: string | null;
   websiteUrl: string | null;
@@ -130,6 +131,7 @@ export function mergeEvents(events: EventRow[], locale: string): MergedEvent[] {
       title: localizedTitle(representative, locale),
       city: representative.city,
       state: representative.state,
+      nat: representative.nat,
       address: representative.address ?? representative.venue ?? null,
       price,
       websiteUrl,

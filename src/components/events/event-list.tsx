@@ -25,8 +25,8 @@ export default function EventList({
         <thead>
           <tr className="border-b-2 border-zinc-800 dark:border-zinc-200">
             {(locale === "en"
-              ? ["Dates", "Type", "Event Name", "City", "State", "Address", "Cost", "Other"]
-              : ["기간", "이벤트", "이벤트 이름", "시", "주", "주소", "비용", "기타"]
+              ? ["Dates", "Type", "Event Name", "City", "State", "NAT", "Address", "Cost", "Other"]
+              : ["기간", "이벤트", "이벤트 이름", "시", "주", "NAT", "주소", "비용", "기타"]
             ).map(
               (heading) => (
                 <th
@@ -62,6 +62,9 @@ export default function EventList({
               </td>
               <td className="border border-zinc-200 p-2 text-zinc-700 dark:border-zinc-800 dark:text-zinc-300">
                 {row.state}
+              </td>
+              <td className="border border-zinc-200 p-2 text-zinc-700 dark:border-zinc-800 dark:text-zinc-300">
+                {row.nat}
               </td>
               <td className="border border-zinc-200 p-2 text-zinc-700 dark:border-zinc-800 dark:text-zinc-300">
                 {row.address ?? "TBD"}

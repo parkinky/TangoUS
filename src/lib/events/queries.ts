@@ -7,6 +7,7 @@ export type EventRow = {
   type: EventType | null;
   city: string | null;
   state: string | null;
+  nat: string | null;
   venue: string | null;
   address: string | null;
   start_date: string | null;

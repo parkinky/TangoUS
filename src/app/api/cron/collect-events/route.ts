@@ -19,6 +19,7 @@ const ScrapedEventSchema = z.object({
   state: z.string().describe(
     "US state or Canadian province, as a 2-letter abbreviation, e.g. TX, BC, ON, QC"
   ),
+  nat: z.string().describe("2-letter country code: US or CA"),
   venue: z.string().nullable().describe("Venue name, null if unknown"),
   address: z.string().nullable().describe("Street address, null if unknown"),
   start_date: z.string().describe("ISO date, YYYY-MM-DD"),
@@ -174,6 +175,7 @@ export async function GET(request: NextRequest) {
       type: event.type,
       city: event.city,
       state: event.state,
+      nat: event.nat,
       venue: event.venue,
       address: event.address,
       start_date: event.start_date,

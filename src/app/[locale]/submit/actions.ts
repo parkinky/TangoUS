@@ -11,6 +11,7 @@ type SubmitEventErrors = Partial<
     | "startDate"
     | "city"
     | "state"
+    | "nat"
     | "address"
     | "description",
     string
@@ -37,6 +38,7 @@ export async function submitEvent(
   const endDate = String(formData.get("endDate") ?? "").trim();
   const city = String(formData.get("city") ?? "").trim();
   const state = String(formData.get("state") ?? "").trim();
+  const nat = String(formData.get("nat") ?? "").trim();
   const address = String(formData.get("address") ?? "").trim();
   const venue = String(formData.get("venue") ?? "").trim();
   const description = String(formData.get("description") ?? "").trim();
@@ -50,6 +52,7 @@ export async function submitEvent(
   if (!startDate) errors.startDate = "날짜를 입력해주세요.";
   if (!city) errors.city = "도시를 입력해주세요.";
   if (!state) errors.state = "주(state)를 입력해주세요.";
+  if (!nat) errors.nat = "국가를 선택해주세요.";
   if (!address) errors.address = "주소를 입력해주세요.";
   if (!description) errors.description = "설명을 입력해주세요.";
 
@@ -70,6 +73,7 @@ export async function submitEvent(
     type,
     city,
     state,
+    nat,
     venue: venue || null,
     address,
     start_date: startDate,
