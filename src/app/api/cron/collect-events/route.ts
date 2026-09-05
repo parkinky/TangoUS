@@ -18,7 +18,14 @@ type EventType = (typeof EVENT_TYPES)[number];
 // WHOLE batch over one bad label, discarding every other event found in
 // the same run. Every auto-scraped event still goes through admin
 // approval before it's public, so normalizing a mislabel is far cheaper
-// than losing the run — hence a tolerant string + transform instead.
+// than losing the run.
+//
+// This has to happen as a separate step after parsing, not as a
+// z.transform() on the schema field: zodOutputFormat() converts the Zod
+// schema to a JSON Schema for the API's structured-output config, and
+// JSON Schema has no way to represent a transform function — adding one
+// makes schema generation itself throw ("Transforms cannot be
+// represented in JSON Schema") before a single request is even sent.
 function normalizeEventType(raw: string): EventType {
   const key = raw.trim().toLowerCase();
   if ((EVENT_TYPES as readonly string[]).includes(key)) return key as EventType;
@@ -36,8 +43,7 @@ const ScrapedEventSchema = z.object({
     .string()
     .describe(
       'One of: "event" (엔쿠엔트로/Encuentro), "festival", "marathon", "milonga"'
-    )
-    .transform(normalizeEventType),
+    ),
   city: z.string(),
   state: z.string().describe(
     "US state or Canadian province, as a 2-letter abbreviation, e.g. TX, BC, ON, QC"
@@ -202,7 +208,7 @@ export async function GET(request: NextRequest) {
     }
 
     const { error } = await supabase.from("events").insert({
-      type: event.type,
+      type: normalizeEventType(event.type),
       city: event.city,
       state: event.state,
       nat: event.nat,
