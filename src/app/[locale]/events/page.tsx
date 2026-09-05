@@ -21,13 +21,11 @@ export default async function EventsPage({
 
   const cityCtx = await resolveCityContext();
 
-  const events = cityCtx.selected
-    ? await getUpcomingEvents({
-        city: cityCtx.selected.city,
-        state: cityCtx.selected.state,
-        type,
-      })
-    : [];
+  const events = await getUpcomingEvents({
+    city: cityCtx.selected?.city,
+    state: cityCtx.selected?.state,
+    type,
+  });
 
   return (
     <div className="flex flex-1 flex-col items-center gap-6 bg-zinc-50 px-6 py-16 dark:bg-black">
@@ -40,13 +38,12 @@ export default async function EventsPage({
         currentType={type}
         basePath="/events"
       />
-      {!cityCtx.selected ? (
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
-          이벤트를 보려면 먼저 도시를 선택해주세요.
-        </p>
-      ) : (
-        <EventList events={events} locale={locale} />
-      )}
+      <p className="text-sm text-zinc-500 dark:text-zinc-500">
+        {cityCtx.selected
+          ? `${cityCtx.selected.city}${cityCtx.selected.state ? ", " + cityCtx.selected.state : ""} 이벤트만 표시 중`
+          : "전체 도시의 이벤트를 표시 중"}
+      </p>
+      <EventList events={events} locale={locale} />
     </div>
   );
 }

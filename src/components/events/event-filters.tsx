@@ -35,6 +35,7 @@ export default function EventFilters({
   const hasSelectedInOptions = cityOptions.some(
     (o) => cityValue(o) === selectedValue
   );
+  const showSelectedFallback = Boolean(selectedCity) && !hasSelectedInOptions;
 
   return (
     <div className="w-full max-w-3xl space-y-3">
@@ -49,15 +50,11 @@ export default function EventFilters({
           onChange={(e) => e.currentTarget.form?.requestSubmit()}
           className="rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-sm text-black dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
         >
-          {!hasSelectedInOptions && (
+          <option value="">전체 도시</option>
+          {showSelectedFallback && (
             <option value={selectedValue}>
-              {selectedCity
-                ? `${selectedCity.city}${selectedCity.state ? ", " + selectedCity.state : ""}`
-                : "도시를 선택하세요"}
+              {`${selectedCity!.city}${selectedCity!.state ? ", " + selectedCity!.state : ""}`}
             </option>
-          )}
-          {!selectedValue && !hasSelectedInOptions && (
-            <option value="">도시를 선택하세요</option>
           )}
           {cityOptions.map((option) => (
             <option key={cityValue(option)} value={cityValue(option)}>

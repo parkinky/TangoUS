@@ -40,15 +40,13 @@ export default async function CalendarPage({
 
   const cityCtx = await resolveCityContext();
 
-  const events = cityCtx.selected
-    ? await getMonthEvents({
-        city: cityCtx.selected.city,
-        state: cityCtx.selected.state,
-        type,
-        monthStart,
-        monthEnd,
-      })
-    : [];
+  const events = await getMonthEvents({
+    city: cityCtx.selected?.city,
+    state: cityCtx.selected?.state,
+    type,
+    monthStart,
+    monthEnd,
+  });
 
   const prevDate = new Date(Date.UTC(year, month - 1, 1));
   const nextDate = new Date(Date.UTC(year, month + 1, 1));
@@ -97,13 +95,7 @@ export default async function CalendarPage({
         </Link>
       </div>
 
-      {!cityCtx.selected ? (
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
-          이벤트를 보려면 먼저 도시를 선택해주세요.
-        </p>
-      ) : (
-        <EventCalendar year={year} month={month} events={events} locale={locale} />
-      )}
+      <EventCalendar year={year} month={month} events={events} locale={locale} />
     </div>
   );
 }

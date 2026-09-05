@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { z } from "zod";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 // Web search + a fairly long structured-output turn can take a while.
@@ -30,6 +31,41 @@ const SearchResultSchema = z.object({
 });
 
 type ParsedSearchResult = z.infer<typeof SearchResultSchema>;
+type ScrapedEvent = z.infer<typeof ScrapedEventSchema>;
+
+// The model doesn't render the Korean title identically across runs (e.g.
+// "우토피아 엔쿠엔트로" vs "유토피아 엔쿠엔트로", or a suffix like "(BTFM)"
+// appearing only sometimes), so matching on title_ko + start_date lets the
+// same real-world event get inserted again and again. Prefer the source
+// URL when we have one — it's the most stable identifier a scrape can
+// produce — and fall back to city + state + date range, since it's very
+// unlikely two distinct tango events start and end on the exact same days
+// in the exact same city.
+async function findExistingEvent(
+  supabase: SupabaseClient,
+  event: ScrapedEvent
+): Promise<{ id: string } | null> {
+  if (event.website_url) {
+    const { data } = await supabase
+      .from("events")
+      .select("id")
+      .eq("website_url", event.website_url)
+      .eq("start_date", event.start_date)
+      .maybeSingle();
+    if (data) return data;
+  }
+
+  const { data } = await supabase
+    .from("events")
+    .select("id")
+    .eq("city", event.city)
+    .eq("state", event.state)
+    .eq("start_date", event.start_date)
+    .eq("end_date", event.end_date ?? event.start_date)
+    .maybeSingle();
+
+  return data;
+}
 
 function isAuthorized(request: NextRequest): boolean {
   const secret = process.env.CRON_SECRET;
@@ -99,12 +135,7 @@ export async function GET(request: NextRequest) {
   for (const event of result.events) {
     if (event.start_date < today) continue;
 
-    const { data: existing } = await supabase
-      .from("events")
-      .select("id")
-      .eq("title_ko", event.title_ko)
-      .eq("start_date", event.start_date)
-      .maybeSingle();
+    const existing = await findExistingEvent(supabase, event);
 
     if (existing) {
       skipped++;
